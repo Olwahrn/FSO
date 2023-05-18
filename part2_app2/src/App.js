@@ -9,6 +9,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -37,16 +38,30 @@ const App = () => {
     setPersons(persons.concat(nameObject))
     setNewName('')
     }
+  
   const renderNames = (namelist) => {
-    return namelist.map((name, index) => (
-      <li key={index}>{name.name} {name.number}</li>
-    ))
+    return namelist
+    .filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
+      .map((name, index) => (
+        <li key={index}>{name.name} {name.number}</li>
+     ))
+  }
+  const handleFilter = (event) => {
+    console.log(event.target.value)
+    setFilter(event.target.value)
+
+
+
   }
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>Filter by
+      <div>
         <form>
+          Filter by <input
+            onChange = {handleFilter}
+            />
+
 
 
         </form>
