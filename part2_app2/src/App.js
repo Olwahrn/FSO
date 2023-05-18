@@ -1,25 +1,80 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
 
-function App() {
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+
+  const handleNameChange = (event) => {
+    console.log(event.target.value)
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
+
+  const addName = (event) => {
+    event.preventDefault()
+    const alreadyAdded = persons.some(person => person.name === newName)
+
+    if (alreadyAdded){
+      alert(`${newName} is already added to the phonebook`)
+      return;
+    }
+    setPersons(persons.concat({newName, newNumber}))
+    setNewName('')
+    setNewNumber('')
+    const nameObject = {
+      name: newName,
+      number: newNumber
+     }
+    setPersons(persons.concat(nameObject))
+    setNewName('')
+    }
+  const renderNames = (namelist) => {
+    return namelist.map((name, index) => (
+      <li key={index}>{name.name} {name.number}</li>
+    ))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Phonebook</h2>
+      <div>Filter by
+        <form>
+
+
+        </form>
+
+
+      </div>
+      <h2>Add info</h2>
+      <form onSubmit = {addName}>
+        <div>name: <input
+         value={newName} 
+         onChange={handleNameChange}
+         /></div>
+         <div>number:<input
+         pattern="[0-9]*"
+         value = {newNumber}
+         onChange = {handleNumberChange}
+         />
+         
+         </div>
+        <div><button type="submit">add</button></div>
+      </form>
+      <h2>Numbers</h2>
+        <p>{renderNames(persons)}</p>
     </div>
-  );
+  )
+
 }
 
-export default App;
+export default App
+
+
